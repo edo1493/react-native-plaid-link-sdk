@@ -2,7 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NativeModules, Platform, TouchableOpacity } from 'react-native';
 
-export const openLink = async ({ onExit, onSuccess, ...serializable }) => {
+export const PlaidLink = async ({
+  onExit,
+  onSuccess,
+  linkPlaidConnection,
+  setConnectionsStatus,
+  getSyncingStatus,
+  ...serializable
+}) => {
   if (Platform.OS === 'android') {
     const constants = NativeModules.PlaidAndroid.getConstants();
     NativeModules.PlaidAndroid.startLinkActivityForResult(
@@ -11,7 +18,12 @@ export const openLink = async ({ onExit, onSuccess, ...serializable }) => {
         switch (result.resultCode) {
           case constants.RESULT_SUCCESS:
             if (onSuccess != null) {
-              onSuccess(result.data);
+              onSuccess(
+                result.data,
+                linkPlaidConnection,
+                setConnectionsStatus,
+                getSyncingStatus,
+              );
             }
             break;
           case constants.RESULT_EXCEPTION:
@@ -37,7 +49,12 @@ export const openLink = async ({ onExit, onSuccess, ...serializable }) => {
         switch (metadata.status) {
           case 'connected':
             if (onSuccess != null) {
-              onSuccess(metadata);
+              onSuccess(
+                metadata,
+                linkPlaidConnection,
+                setConnectionsStatus,
+                getSyncingStatus,
+              );
             }
             break;
           default:
