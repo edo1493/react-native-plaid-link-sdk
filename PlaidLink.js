@@ -68,23 +68,6 @@ export const PlaidLink = async ({
   }
 };
 
-const handlePress = (linkProps, componentProps) => {
-  openLink(linkProps);
-  if (componentProps && componentProps.onPress) {
-    componentProps.onPress();
-  }
-};
-
-export const PlaidLink = ({ component, componentProps, ...linkProps }) => {
-  const Component = component;
-  return (
-    <Component
-      {...componentProps}
-      onPress={() => handlePress(linkProps, componentProps)}
-    />
-  );
-};
-
 PlaidLink.propTypes = {
   // Required props
 
